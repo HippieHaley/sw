@@ -65,9 +65,6 @@ export class MetadataScrubber {
         .withMetadata({
           // Explicitly remove all metadata
           exif: {},
-          icc: undefined,
-          iptc: undefined,
-          xmp: undefined,
         })
         .toFile(outputPath);
 
