@@ -49,20 +49,31 @@ model Post {
 }
 
 model Platform {
-  id              String    @id @default(uuid())
-  userId          String
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                  String    @id @default(uuid())
+  userId              String
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  platformName    String    // twitter, onlyfans, instagram, etc.
-  encryptedConfig String    // Encrypted API credentials
+  platformName        String    // twitter, instagram, reddit, etc.
   
-  customHashtags  String?   // Comma-separated hashtags for this platform
-  isActive        Boolean   @default(true)
+  // OAuth tokens (encrypted)
+  encryptedAccessToken  String?
+  encryptedRefreshToken String?
+  tokenExpiresAt        DateTime?
   
-  platformPosts   PlatformPost[]
+  // Legacy API key support (encrypted) - for platforms without OAuth
+  encryptedConfig     String?
   
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  // Platform-specific data
+  externalUserId      String?   // User ID from the external platform
+  externalUsername    String?   // Username on the external platform
+  
+  customHashtags      String?   // Comma-separated hashtags for this platform
+  isActive            Boolean   @default(true)
+  
+  platformPosts       PlatformPost[]
+  
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
   
   @@unique([userId, platformName])
   @@map("platforms")

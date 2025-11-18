@@ -23,6 +23,7 @@ export default function PostList() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'draft' | 'scheduled' | 'published'>('all');
+  const [posting, setPosting] = useState<string | null>(null);
 
   useEffect(() => {
     loadPosts();
@@ -60,6 +61,34 @@ export default function PostList() {
       }
     } catch (error) {
       alert('Failed to delete post');
+    }
+  };
+
+  const handlePostToTwitter = async (postId: string) => {
+    if (!confirm('Post this to Twitter? This will count towards your 100 monthly API calls.')) {
+      return;
+    }
+
+    setPosting(postId);
+    try {
+      const response = await fetch('/api/platforms/twitter/post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(`✓ Posted to Twitter! View: ${data.tweetUrl}`);
+        loadPosts(); // Refresh to show updated status
+      } else {
+        alert(`Failed: ${data.error}`);
+      }
+    } catch (error) {
+      alert('Failed to post to Twitter');
+    } finally {
+      setPosting(null);
     }
   };
 
@@ -161,12 +190,23 @@ export default function PostList() {
                   )}
                 </div>
 
-                <button
-                  onClick={() => handleDelete(post.id)}
-                  className="ml-4 px-3 py-1 text-sm text-danger hover:text-text hover:bg-danger/20 rounded transition"
-                >
-                  Delete
-                </button>
+                <div className="ml-4 flex flex-col gap-2">
+                  {post.status !== 'published' && (
+                    <button
+                      onClick={() => handlePostToTwitter(post.id)}
+                      disabled={posting === post.id}
+                      className="px-3 py-1 text-sm bg-[#1DA1F2] text-white rounded hover:bg-[#1a8cd8] transition disabled:opacity-50 whitespace-nowrap"
+                    >
+                      {posting === post.id ? 'Posting...' : '🐦 Post to Twitter'}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleDelete(post.id)}
+                    className="px-3 py-1 text-sm text-danger hover:text-text hover:bg-danger/20 rounded transition"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}

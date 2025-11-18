@@ -7,6 +7,7 @@ interface Platform {
   platformName: string;
   customHashtags: string | null;
   isActive: boolean;
+  externalUsername?: string | null;
 }
 
 export default function PlatformManager() {
@@ -18,10 +19,25 @@ export default function PlatformManager() {
   const [apiSecret, setApiSecret] = useState('');
   const [customHashtags, setCustomHashtags] = useState('');
   const [message, setMessage] = useState('');
+  const [connectingOAuth, setConnectingOAuth] = useState(false);
 
   useEffect(() => {
     loadPlatforms();
+    checkOAuthCallback();
   }, []);
+
+  const checkOAuthCallback = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const oauthSuccess = params.get('oauth_success');
+    const code = params.get('code');
+    
+    if (oauthSuccess && code) {
+      setMessage(`✓ ${oauthSuccess} connected successfully!`);
+      // Clear URL parameters
+      window.history.replaceState({}, '', '/dashboard');
+      loadPlatforms();
+    }
+  };
 
   const loadPlatforms = async () => {
     try {
@@ -75,6 +91,33 @@ export default function PlatformManager() {
     }
   };
 
+  const handleOAuthConnect = async (platform: string) => {
+    if (platform === 'twitter') {
+      setConnectingOAuth(true);
+      setMessage('Redirecting to Twitter...');
+      
+      const clientId = process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID;
+      const redirectUri = `${window.location.origin}/api/oauth/callback`;
+      const state = Math.random().toString(36).substring(7);
+      
+      // Twitter OAuth 2.0 URL
+      const authUrl = `https://twitter.com/i/oauth2/authorize?` +
+        `response_type=code&` +
+        `client_id=${clientId}&` +
+        `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+        `scope=tweet.read%20tweet.write%20users.read&` +
+        `state=${state}&` +
+        `code_challenge=challenge&` +
+        `code_challenge_method=plain`;
+      
+      window.location.href = authUrl;
+    } else {
+      setMessage('This platform requires manual API key setup.');
+      setShowForm(true);
+      setPlatformName(platform);
+    }
+  };
+
   if (loading) {
     return (
       <div className="bg-gray-800 rounded-lg p-8 text-center">
@@ -86,7 +129,10 @@ export default function PlatformManager() {
   return (
     <div className="bg-background-elevated rounded-lg p-6 border border-border">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-text-header">Platform Integrations</h2>
+        <div>
+          <h2 className="text-2xl font-bold text-text-header">Platform Integrations</h2>
+          <p className="text-sm text-text-muted mt-1">Connect platforms to cross-post your content</p>
+        </div>
         <button
           onClick={() => setShowForm(!showForm)}
           className="px-4 py-2 bg-primary text-text rounded-lg hover:bg-ink-depth transition"
@@ -95,8 +141,36 @@ export default function PlatformManager() {
         </button>
       </div>
 
+      {/* Quick Connect Section */}
+      {showForm && (
+        <div className="mb-8 p-6 bg-background-card rounded-lg border border-border">
+          <h3 className="text-lg font-medium text-text mb-4">Quick Connect (OAuth)</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <button
+              onClick={() => handleOAuthConnect('twitter')}
+              disabled={connectingOAuth}
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-[#1DA1F2] text-white rounded-lg hover:bg-[#1a8cd8] transition disabled:opacity-50"
+            >
+              <span>🐦</span>
+              <span>Connect Twitter/X</span>
+            </button>
+            <button
+              disabled
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-charcoal text-text-muted rounded-lg cursor-not-allowed border border-border"
+            >
+              <span>📸</span>
+              <span>Instagram (Coming Soon)</span>
+            </button>
+          </div>
+          <p className="text-xs text-text-muted mt-4">
+            ⚠️ Free Twitter tier: 100 API calls/month (~3 posts/day)
+          </p>
+        </div>
+      )}
+
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-8 p-6 bg-background-card rounded-lg space-y-4 border border-border">
+          <h3 className="text-lg font-medium text-text mb-4">Manual API Setup</h3>
           <div>
             <label className="block text-sm font-medium text-text mb-2">
               Platform Name
@@ -197,6 +271,11 @@ export default function PlatformManager() {
               <div>
                 <h3 className="text-text font-medium capitalize">
                   {platform.platformName}
+                  {platform.externalUsername && (
+                    <span className="text-sm text-text-muted ml-2">
+                      @{platform.externalUsername}
+                    </span>
+                  )}
                 </h3>
                 {platform.customHashtags && (
                   <p className="text-sm text-text-muted mt-1">
