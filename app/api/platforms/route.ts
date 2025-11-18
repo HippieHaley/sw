@@ -28,17 +28,19 @@ export async function GET(request: NextRequest) {
         encryptedConfig: true,
         customHashtags: true,
         isActive: true,
+        externalUsername: true,
         createdAt: true,
       },
     });
 
-    // Decrypt config
+    // Decrypt config (if exists, for legacy API key platforms)
     const decryptedPlatforms = platforms.map(p => ({
       id: p.id,
       platformName: p.platformName,
-      config: decryptObject(p.encryptedConfig),
+      config: p.encryptedConfig ? decryptObject(p.encryptedConfig) : null,
       customHashtags: p.customHashtags,
       isActive: p.isActive,
+      externalUsername: p.externalUsername,
       createdAt: p.createdAt,
     }));
 
