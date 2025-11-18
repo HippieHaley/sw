@@ -17,9 +17,10 @@ export const runtime = 'nodejs';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   const { prisma } = await import('@/lib/prisma');
+  const params = await context.params;
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 
@@ -69,9 +70,10 @@ export async function GET(
 // Update post
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   const { prisma } = await import('@/lib/prisma');
+  const params = await context.params;
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 
@@ -124,9 +126,10 @@ export async function PATCH(
 // Delete post
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   const { prisma } = await import('@/lib/prisma');
+  const params = await context.params;
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 
