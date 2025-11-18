@@ -1,4 +1,4 @@
-import { IronSessionOptions } from 'iron-session';
+import { SessionOptions } from 'iron-session';
 
 export interface SessionData {
   userId: string;
@@ -6,7 +6,7 @@ export interface SessionData {
   isLoggedIn: boolean;
 }
 
-export const sessionOptions: IronSessionOptions = {
+export const sessionOptions: SessionOptions = {
   password: process.env.SESSION_SECRET || 'complex_password_at_least_32_characters_long',
   cookieName: 'sw_secure_session',
   cookieOptions: {
