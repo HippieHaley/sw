@@ -93,16 +93,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Create platform posts if specified
-    if (data.platformIds && data.platformIds.length > 0) {
-      await prisma.platformPost.createMany({
-        data: data.platformIds.map(platformId => ({
-          postId: post.id,
-          platformId,
-        })),
-      });
-    }
-
     return NextResponse.json({
       success: true,
       post: {
