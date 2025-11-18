@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("MONGODB_URI")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String    @id @default(uuid())
   username      String    @unique
   passwordHash  String
   createdAt     DateTime  @default(now())
@@ -24,8 +24,8 @@ model User {
 }
 
 model Post {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String    @db.ObjectId
+  id              String    @id @default(uuid())
+  userId          String
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   // Encrypted content
@@ -49,8 +49,8 @@ model Post {
 }
 
 model Platform {
-  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId              String    @db.ObjectId
+  id                  String    @id @default(uuid())
+  userId              String
   user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   platformName        String    // twitter, instagram, reddit, etc.
@@ -80,10 +80,10 @@ model Platform {
 }
 
 model PlatformPost {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  postId          String    @db.ObjectId
+  id              String    @id @default(uuid())
+  postId          String
   post            Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  platformId      String    @db.ObjectId
+  platformId      String
   platform        Platform  @relation(fields: [platformId], references: [id], onDelete: Cascade)
   
   externalId      String?   // ID from external platform
