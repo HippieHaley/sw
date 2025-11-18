@@ -3,10 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    outputFileTracingIncludes: {
-      '/api/**/*': ['./node_modules/**/*.node'],
-    },
-    outputFileTracingIgnores: ['**git**', '**temp**', '**uploads**'],
+    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs', 'sharp'],
   },
   headers: async () => {
     return [
