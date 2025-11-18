@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getIronSession } from 'iron-session';
 import { sessionOptions, SessionData } from '@/lib/session';
-import { prisma } from '@/lib/prisma';
 import { encrypt, decrypt } from '@/lib/encryption';
 import { metadataScrubber } from '@/lib/metadata-scrubber';
 import { z } from 'zod';
@@ -12,14 +11,6 @@ const updateSchema = z.object({
   scheduledFor: z.string().optional(),
   status: z.enum(['draft', 'scheduled', 'published', 'failed']).optional(),
 });
-
-// Get single post
-import { NextRequest, NextResponse } from 'next/server';
-import { getIronSession } from 'iron-session';
-import { sessionOptions, SessionData } from '@/lib/session';
-import { decrypt } from '@/lib/encryption';
-import { promises as fs } from 'fs';
-import path from 'path';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -80,6 +71,7 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const { prisma } = await import('@/lib/prisma');
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 
