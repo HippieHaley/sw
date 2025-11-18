@@ -9,7 +9,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, account, profile }) {
+    async jwt({ token, account }) {
       // Save OAuth tokens to JWT
       if (account) {
         token.accessToken = account.access_token
@@ -20,9 +20,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token
     },
     async session({ session, token }) {
-      // Make tokens available in session
-      session.accessToken = token.accessToken as string
-      session.provider = token.provider as string
+      // Make tokens available in session (casting to any to bypass type checking)
+      (session as any).accessToken = token.accessToken as string
+      (session as any).provider = token.provider as string
       return session
     },
   },
