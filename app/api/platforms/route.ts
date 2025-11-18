@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getIronSession } from 'iron-session';
 import { sessionOptions, SessionData } from '@/lib/session';
-import { prisma } from '@/lib/prisma';
 import { encryptObject, decryptObject } from '@/lib/encryption';
 import { z } from 'zod';
 
@@ -11,8 +10,12 @@ const platformSchema = z.object({
   customHashtags: z.string().optional(),
 });
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // Get all platforms for user
 export async function GET(request: NextRequest) {
+  const { prisma } = await import('@/lib/prisma');
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 
@@ -53,6 +56,7 @@ export async function GET(request: NextRequest) {
 
 // Add new platform
 export async function POST(request: NextRequest) {
+  const { prisma } = await import('@/lib/prisma');
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 

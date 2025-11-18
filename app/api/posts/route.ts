@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getIronSession } from 'iron-session';
 import { sessionOptions, SessionData } from '@/lib/session';
-import { prisma } from '@/lib/prisma';
 import { encrypt, decrypt } from '@/lib/encryption';
 import { z } from 'zod';
 
@@ -10,12 +9,15 @@ const postSchema = z.object({
   description: z.string().optional(),
   filePath: z.string().optional(),
   scheduledFor: z.string().optional(),
-  status: z.enum(['draft', 'scheduled']).default('draft'),
-  platformIds: z.array(z.string()).optional(),
+  status: z.enum(['draft', 'scheduled', 'published']).default('draft'),
 });
 
-// Get all posts for the authenticated user
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+// Get all posts for user
 export async function GET(request: NextRequest) {
+  const { prisma } = await import('@/lib/prisma');
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 
@@ -62,8 +64,9 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Create a new post
+// Create new post
 export async function POST(request: NextRequest) {
+  const { prisma } = await import('@/lib/prisma');
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 

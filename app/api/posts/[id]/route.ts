@@ -14,10 +14,21 @@ const updateSchema = z.object({
 });
 
 // Get single post
+import { NextRequest, NextResponse } from 'next/server';
+import { getIronSession } from 'iron-session';
+import { sessionOptions, SessionData } from '@/lib/session';
+import { decrypt } from '@/lib/encryption';
+import { promises as fs } from 'fs';
+import path from 'path';
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const { prisma } = await import('@/lib/prisma');
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 
@@ -123,6 +134,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const { prisma } = await import('@/lib/prisma');
   try {
     const session = await getIronSession<SessionData>(request, NextResponse.next(), sessionOptions);
 
