@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/prisma';
 import { hashPassword } from '@/lib/auth';
 import { getIronSession } from 'iron-session';
 import { sessionOptions, SessionData } from '@/lib/session';
@@ -10,7 +9,11 @@ const registerSchema = z.object({
   password: z.string().min(12, 'Password must be at least 12 characters'),
 });
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
+  const { prisma } = await import('@/lib/prisma');
   try {
     const body = await request.json();
     const { username, password } = registerSchema.parse(body);
