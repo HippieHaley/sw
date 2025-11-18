@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  serverExternalPackages: ['@prisma/client', 'bcryptjs', 'sharp'],
+  swcMinify: true,
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs', 'sharp'],
+  },
   headers: async () => {
     return [
       {
