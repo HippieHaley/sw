@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Platform - Privacy First</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login/Register Screen -->
+        <div id="auth-screen" class="screen active">
+            <div class="auth-container">
+                <div class="header">
+                    <h1>🔒 Secure Platform</h1>
+                    <p class="subtitle">Privacy-first content management</p>
+                </div>
+
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+
+                <div id="login-form" class="auth-form active">
+                    <h2>Welcome Back</h2>
+                    <input type="text" id="login-username" placeholder="Username" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <button id="login-btn" class="btn btn-primary">Login</button>
+                </div>
+
+                <div id="register-form" class="auth-form">
+                    <h2>Create Account</h2>
+                    <input type="text" id="register-username" placeholder="Username" required>
+                    <input type="password" id="register-password" placeholder="Password (min 8 characters)" required>
+                    <button id="register-btn" class="btn btn-primary">Register</button>
+                </div>
+
+                <div class="privacy-note">
+                    <p>🔐 We don't collect personal information</p>
+                    <p>🛡️ All data is encrypted at rest</p>
+                    <p>🗑️ Emergency delete available anytime</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard-screen" class="screen">
+            <nav class="navbar">
+                <div class="nav-brand">🔒 Secure Platform</div>
+                <div class="nav-user">
+                    <span id="username-display"></span>
+                    <button id="logout-btn" class="btn btn-sm">Logout</button>
+                    <button id="emergency-delete-btn" class="btn btn-danger btn-sm">🚨 Emergency Delete</button>
+                </div>
+            </nav>
+
+            <div class="dashboard">
+                <aside class="sidebar">
+                    <button class="nav-item active" data-view="content">📁 Content</button>
+                    <button class="nav-item" data-view="calendar">📅 Calendar</button>
+                    <button class="nav-item" data-view="platforms">🔗 Platforms</button>
+                    <button class="nav-item" data-view="hashtags">🏷️ Hashtags</button>
+                </aside>
+
+                <main class="main-content">
+                    <!-- Content View -->
+                    <div id="content-view" class="view active">
+                        <div class="view-header">
+                            <h2>Content Management</h2>
+                            <button id="upload-btn" class="btn btn-primary">+ Upload Content</button>
+                        </div>
+
+                        <div id="upload-form" class="upload-form hidden">
+                            <h3>Upload New Content</h3>
+                            <p class="info-text">📝 Metadata will be automatically scrubbed from your files</p>
+                            <input type="file" id="file-input" accept="image/*,video/*" required>
+                            <input type="text" id="content-title" placeholder="Title (optional)">
+                            <textarea id="content-description" placeholder="Description (optional)"></textarea>
+                            <input type="datetime-local" id="content-schedule" placeholder="Schedule (optional)">
+                            <div class="form-actions">
+                                <button id="submit-upload" class="btn btn-primary">Upload</button>
+                                <button id="cancel-upload" class="btn btn-secondary">Cancel</button>
+                            </div>
+                            <div id="upload-progress" class="progress-bar hidden"></div>
+                        </div>
+
+                        <div id="content-list" class="content-grid"></div>
+                    </div>
+
+                    <!-- Calendar View -->
+                    <div id="calendar-view" class="view">
+                        <div class="view-header">
+                            <h2>Monthly Schedule</h2>
+                            <div class="calendar-controls">
+                                <button id="prev-month" class="btn btn-sm">← Prev</button>
+                                <span id="current-month"></span>
+                                <button id="next-month" class="btn btn-sm">Next →</button>
+                            </div>
+                        </div>
+                        <div id="calendar-grid" class="calendar"></div>
+                        <div id="event-form" class="event-form hidden">
+                            <h3>Add Event</h3>
+                            <input type="text" id="event-title" placeholder="Event title" required>
+                            <textarea id="event-description" placeholder="Description (optional)"></textarea>
+                            <input type="date" id="event-date" required>
+                            <div class="form-actions">
+                                <button id="save-event" class="btn btn-primary">Save Event</button>
+                                <button id="cancel-event" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Platforms View -->
+                    <div id="platforms-view" class="view">
+                        <div class="view-header">
+                            <h2>Platform Connections</h2>
+                            <button id="add-platform-btn" class="btn btn-primary">+ Connect Platform</button>
+                        </div>
+
+                        <div id="platform-form" class="platform-form hidden">
+                            <h3>Connect Platform</h3>
+                            <select id="platform-select">
+                                <option value="">Select Platform</option>
+                                <option value="twitter">Twitter/X</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="onlyfans">OnlyFans</option>
+                                <option value="fansly">Fansly</option>
+                                <option value="manyvids">ManyVids</option>
+                                <option value="reddit">Reddit</option>
+                            </select>
+                            <textarea id="platform-credentials" placeholder='{"api_key": "your-key", "api_secret": "your-secret"}' rows="4"></textarea>
+                            <p class="info-text">🔐 Credentials are encrypted before storage</p>
+                            <div class="form-actions">
+                                <button id="connect-platform" class="btn btn-primary">Connect</button>
+                                <button id="cancel-platform" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+
+                        <div id="platforms-list" class="platforms-grid"></div>
+
+                        <div class="cross-post-section">
+                            <h3>Cross-Post Content</h3>
+                            <select id="cross-post-content">
+                                <option value="">Select content to post</option>
+                            </select>
+                            <div id="cross-post-platforms" class="checkbox-group"></div>
+                            <button id="cross-post-btn" class="btn btn-primary">Cross-Post</button>
+                        </div>
+                    </div>
+
+                    <!-- Hashtags View -->
+                    <div id="hashtags-view" class="view">
+                        <div class="view-header">
+                            <h2>Custom Hashtags per Platform</h2>
+                        </div>
+                        <div id="hashtags-container"></div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
