@@ -57,7 +57,7 @@ export default function Home() {
             className={`flex-1 py-2 px-4 rounded-lg font-medium transition ${
               isLogin
                 ? 'bg-primary text-text'
-                : 'bg-background-card text-text-muted hover:bg-gunmetal-fade'
+                : 'bg-background-card text-text-muted hover:bg-onyx'
             }`}
           >
             Login
@@ -67,7 +67,7 @@ export default function Home() {
             className={`flex-1 py-2 px-4 rounded-lg font-medium transition ${
               !isLogin
                 ? 'bg-primary text-text'
-                : 'bg-background-card text-text-muted hover:bg-gunmetal-fade'
+                : 'bg-background-card text-text-muted hover:bg-onyx'
             }`}
           >
             Register
@@ -83,7 +83,7 @@ export default function Home() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 bg-background-card border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-soft-ivory placeholder-text-secondary"
+              className="w-full px-4 py-2 bg-soft-bone-grey border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-charcoal placeholder-onyx"
               required
               autoComplete="username"
             />
@@ -97,7 +97,7 @@ export default function Home() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 bg-background-card border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-text placeholder-text-secondary"
+              className="w-full px-4 py-2 bg-soft-bone-grey border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-charcoal placeholder-onyx"
               required
               minLength={isLogin ? 1 : 12}
               autoComplete={isLogin ? 'current-password' : 'new-password'}
@@ -118,7 +118,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-text py-3 rounded-lg font-medium hover:bg-primary-hover transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary text-text py-3 rounded-lg font-medium hover:bg-ink-depth transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Please wait...' : isLogin ? 'Login' : 'Create Account'}
           </button>

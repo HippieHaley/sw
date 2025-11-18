@@ -89,7 +89,7 @@ export default function PlatformManager() {
         <h2 className="text-2xl font-bold text-text-header">Platform Integrations</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-4 py-2 bg-primary text-text rounded-lg hover:bg-primary-hover transition"
+          className="px-4 py-2 bg-primary text-text rounded-lg hover:bg-ink-depth transition"
         >
           {showForm ? 'Cancel' : '+ Add Platform'}
         </button>
@@ -173,7 +173,7 @@ export default function PlatformManager() {
 
           <button
             type="submit"
-            className="w-full bg-primary text-text py-2 rounded-lg hover:bg-primary-hover transition"
+            className="w-full bg-primary text-text py-2 rounded-lg hover:bg-ink-depth transition"
           >
             Add Platform
           </button>
