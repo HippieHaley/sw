@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
   const { prisma } = await import('@/lib/prisma');
   try {
     const body = await request.json();
+    console.log('Login attempt for username:', body.username);
     const { username, password } = loginSchema.parse(body);
 
     // Find user
@@ -24,21 +25,26 @@ export async function POST(request: NextRequest) {
     });
 
     if (!user) {
+      console.log('User not found:', username);
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
       );
     }
 
+    console.log('User found, verifying password...');
     // Verify password
     const isValid = await verifyPassword(password, user.passwordHash);
 
     if (!isValid) {
+      console.log('Password verification failed');
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
       );
     }
+
+    console.log('Password verified successfully');
 
     // Update last login
     await prisma.user.update({
@@ -64,15 +70,17 @@ export async function POST(request: NextRequest) {
     return response;
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.error('Validation error:', error.errors);
       return NextResponse.json(
-        { error: 'Invalid input' },
+        { error: 'Invalid input', details: error.errors },
         { status: 400 }
       );
     }
 
     console.error('Login error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     return NextResponse.json(
-      { error: 'Login failed' },
+      { error: 'Login failed', message: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
