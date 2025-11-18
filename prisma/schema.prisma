@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  username      String    @unique
+  passwordHash  String
+  createdAt     DateTime  @default(now())
+  lastLogin     DateTime?
+  
+  // Encrypted profile data
+  encryptedData String?   // Stores any optional profile info encrypted
+  
+  posts         Post[]
+  platforms     Platform[]
+  
+  @@map("users")
+}
+
+model Post {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Encrypted content
+  encryptedTitle       String
+  encryptedDescription String?
+  encryptedFilePath    String?  // Path to scrubbed media file
+  
+  // Scheduling
+  scheduledFor    DateTime?
+  publishedAt     DateTime?
+  status          String    @default("draft") // draft, scheduled, published, failed
+  
+  // Platform-specific data
+  platformPosts   PlatformPost[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("posts")
+  @@index([userId, scheduledFor])
+}
+
+model Platform {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  platformName    String    // twitter, onlyfans, instagram, etc.
+  encryptedConfig String    // Encrypted API credentials
+  
+  customHashtags  String?   // Comma-separated hashtags for this platform
+  isActive        Boolean   @default(true)
+  
+  platformPosts   PlatformPost[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@unique([userId, platformName])
+  @@map("platforms")
+}
+
+model PlatformPost {
+  id              String    @id @default(uuid())
+  postId          String
+  post            Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  platformId      String
+  platform        Platform  @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  
+  externalId      String?   // ID from external platform
+  status          String    @default("pending") // pending, posted, failed
+  errorMessage    String?
+  
+  postedAt        DateTime?
+  
+  @@map("platform_posts")
+  @@index([postId])
+}
