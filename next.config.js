@@ -2,6 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/**/*': ['./node_modules/**/*.node'],
+    },
+    outputFileTracingIgnores: ['**git**', '**temp**', '**uploads**'],
+  },
   headers: async () => {
     return [
       {
