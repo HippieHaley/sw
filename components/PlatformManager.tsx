@@ -84,27 +84,27 @@ export default function PlatformManager() {
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6">
+    <div className="bg-background-elevated rounded-lg p-6 border border-border">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-white">Platform Integrations</h2>
+        <h2 className="text-2xl font-bold text-text-header">Platform Integrations</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+          className="px-4 py-2 bg-primary text-text rounded-lg hover:bg-primary-hover transition"
         >
           {showForm ? 'Cancel' : '+ Add Platform'}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mb-8 p-6 bg-gray-700 rounded-lg space-y-4">
+        <form onSubmit={handleSubmit} className="mb-8 p-6 bg-background-card rounded-lg space-y-4 border border-border">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               Platform Name
             </label>
             <select
               value={platformName}
               onChange={(e) => setPlatformName(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white"
+              className="w-full px-4 py-2 bg-background border border-border rounded-lg text-soft-ivory"
               required
             >
               <option value="">Select platform...</option>
@@ -118,33 +118,33 @@ export default function PlatformManager() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               API Key
             </label>
             <input
               type="password"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white"
+              className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               API Secret
             </label>
             <input
               type="password"
               value={apiSecret}
               onChange={(e) => setApiSecret(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white"
+              className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               Custom Hashtags (comma-separated)
             </label>
             <input
@@ -152,9 +152,9 @@ export default function PlatformManager() {
               value={customHashtags}
               onChange={(e) => setCustomHashtags(e.target.value)}
               placeholder="#example, #hashtags, #here"
-              className="w-full px-4 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white"
+              className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text"
             />
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-text-muted mt-1">
               These hashtags will be automatically added to posts on this platform
             </p>
           </div>
@@ -163,8 +163,8 @@ export default function PlatformManager() {
             <div
               className={`px-4 py-3 rounded-lg text-sm ${
                 message.startsWith('✓')
-                  ? 'bg-green-900/50 border border-green-700 text-green-300'
-                  : 'bg-red-900/50 border border-red-700 text-red-300'
+                  ? 'bg-primary/20 border border-accent text-accent'
+                  : 'bg-danger/20 border border-danger text-text'
               }`}
             >
               {message}
@@ -173,7 +173,7 @@ export default function PlatformManager() {
 
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition"
+            className="w-full bg-primary text-text py-2 rounded-lg hover:bg-primary-hover transition"
           >
             Add Platform
           </button>
@@ -183,8 +183,8 @@ export default function PlatformManager() {
       <div className="space-y-4">
         {platforms.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-400">No platforms connected</p>
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-text-muted">No platforms connected</p>
+            <p className="text-sm text-text-secondary mt-2">
               Add a platform to enable cross-posting
             </p>
           </div>
@@ -192,14 +192,14 @@ export default function PlatformManager() {
           platforms.map(platform => (
             <div
               key={platform.id}
-              className="bg-gray-700 rounded-lg p-4 flex justify-between items-center"
+              className="bg-background-card rounded-lg p-4 flex justify-between items-center border border-border"
             >
               <div>
-                <h3 className="text-white font-medium capitalize">
+                <h3 className="text-text font-medium capitalize">
                   {platform.platformName}
                 </h3>
                 {platform.customHashtags && (
-                  <p className="text-sm text-gray-400 mt-1">
+                  <p className="text-sm text-text-muted mt-1">
                     Hashtags: {platform.customHashtags}
                   </p>
                 )}
@@ -207,8 +207,8 @@ export default function PlatformManager() {
               <span
                 className={`px-3 py-1 rounded text-sm ${
                   platform.isActive
-                    ? 'bg-green-900 text-green-300'
-                    : 'bg-red-900 text-red-300'
+                    ? 'bg-primary text-accent'
+                    : 'bg-charcoal text-text-muted'
                 }`}
               >
                 {platform.isActive ? 'Active' : 'Inactive'}
@@ -218,8 +218,8 @@ export default function PlatformManager() {
         )}
       </div>
 
-      <div className="mt-6 p-4 bg-blue-900/30 border border-blue-700 rounded-lg">
-        <p className="text-sm text-blue-300">
+      <div className="mt-6 p-4 bg-midnight-blue/30 border border-midnight-blue rounded-lg">
+        <p className="text-sm text-text">
           ℹ️ <strong>Note:</strong> API credentials are encrypted and stored securely. 
           Cross-posting functionality requires valid API access from each platform.
         </p>

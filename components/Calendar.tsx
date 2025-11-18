@@ -74,15 +74,15 @@ export default function Calendar() {
 
   if (loading) {
     return (
-      <div className="bg-gray-800 rounded-lg p-8 text-center">
-        <p className="text-gray-400">Loading calendar...</p>
+      <div className="bg-background-elevated rounded-lg p-8 text-center border border-border">
+        <p className="text-text-muted">Loading calendar...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6">
-      <h2 className="text-2xl font-bold text-white mb-6">Content Calendar</h2>
+    <div className="bg-background-elevated rounded-lg p-6 border border-border">
+      <h2 className="text-2xl font-bold text-soft-ivory mb-6">Content Calendar</h2>
       
       <div className="calendar-container bg-white rounded-lg p-4">
         <BigCalendar
@@ -102,7 +102,7 @@ export default function Calendar() {
         />
       </div>
 
-      <div className="mt-4 text-sm text-gray-400">
+      <div className="mt-4 text-sm text-text-muted">
         <p>📅 Click on a date to create a new scheduled post</p>
         <p>📝 Click on an event to view post details</p>
       </div>

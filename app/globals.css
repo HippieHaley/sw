@@ -3,27 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --background: #110418;
+  --background-elevated: #282828;
+  --foreground: #BFB8B9;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--foreground);
+  background: var(--background);
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 .calendar-container {
@@ -31,24 +19,74 @@ body {
 }
 
 .rbc-calendar {
-  background: white;
+  background: #282828;
   border-radius: 8px;
+  color: #BFB8B9;
+  border: 1px solid #504748;
 }
 
 .rbc-header {
   padding: 10px;
   font-weight: 600;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid #504748;
+  color: #BFB8B9;
+  background: #181818;
 }
 
 .rbc-event {
-  background-color: #8B5CF6;
+  background-color: #5A4355;
   border-radius: 4px;
   padding: 2px 5px;
+  color: #BFB8B9;
+  border: 1px solid #10030A;
 }
 
 .rbc-event:hover {
-  background-color: #7C3AED;
+  background-color: #10030A;
+}
+
+.rbc-today {
+  background-color: #474048;
+}
+
+.rbc-off-range-bg {
+  background: #181818;
+}
+
+.rbc-date-cell {
+  color: #A79496;
+}
+
+.rbc-button-link {
+  color: #BFB8B9;
+}
+
+.rbc-toolbar button {
+  color: #BFB8B9;
+  background: #474048;
+  border: 1px solid #504748;
+}
+
+.rbc-toolbar button:hover {
+  background: #5A4355;
+}
+
+.rbc-toolbar button.rbc-active {
+  background: #5A4355;
+  border-color: #10030A;
+}
+
+.rbc-day-bg {
+  background: #282828;
+  border-color: #504748;
+}
+
+.rbc-month-view {
+  border-color: #504748;
+}
+
+.rbc-month-row {
+  border-color: #504748;
 }
 
 .emergency-delete-btn {

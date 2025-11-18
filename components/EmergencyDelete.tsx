@@ -40,19 +40,19 @@ export default function EmergencyDelete() {
     <>
       <button
         onClick={() => setShowConfirm(true)}
-        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition emergency-delete-btn font-medium"
+        className="px-4 py-2 bg-danger text-text rounded-lg hover:bg-ink-depth transition emergency-delete-btn font-medium border border-danger"
       >
         🚨 Emergency Delete
       </button>
 
       {showConfirm && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full border-2 border-red-600">
-            <h2 className="text-2xl font-bold text-red-400 mb-4">
+        <div className="fixed inset-0 bg-ink-depth/90 flex items-center justify-center z-50 p-4">
+          <div className="bg-background-elevated rounded-lg p-6 max-w-md w-full border-2 border-danger">
+            <h2 className="text-2xl font-bold text-danger mb-4">
               ⚠️ Emergency Delete
             </h2>
 
-            <div className="space-y-4 text-gray-300">
+            <div className="space-y-4 text-text">
               <p className="font-medium">
                 This will IMMEDIATELY and PERMANENTLY delete:
               </p>
@@ -64,21 +64,21 @@ export default function EmergencyDelete() {
                 <li>All scheduled posts</li>
               </ul>
 
-              <div className="bg-red-900/30 border border-red-700 rounded p-3 text-sm">
-                <p className="text-red-300 font-bold">
+              <div className="bg-danger/30 border border-danger rounded p-3 text-sm">
+                <p className="text-danger font-bold">
                   THIS CANNOT BE UNDONE
                 </p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Type <span className="font-bold text-red-400">DELETE EVERYTHING</span> to confirm:
+                  Type <span className="font-bold text-danger">DELETE EVERYTHING</span> to confirm:
                 </label>
                 <input
                   type="text"
                   value={confirmText}
                   onChange={(e) => setConfirmText(e.target.value)}
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-background-card border border-border rounded-lg text-text"
                   placeholder="DELETE EVERYTHING"
                   disabled={deleting}
                 />
@@ -92,14 +92,14 @@ export default function EmergencyDelete() {
                   setConfirmText('');
                 }}
                 disabled={deleting}
-                className="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition disabled:opacity-50"
+                className="flex-1 px-4 py-2 bg-background-card text-text rounded-lg hover:bg-gunmetal-fade transition disabled:opacity-50 border border-border"
               >
                 Cancel
               </button>
               <button
                 onClick={handleEmergencyDelete}
                 disabled={deleting || confirmText !== 'DELETE EVERYTHING'}
-                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50 font-medium"
+                className="flex-1 px-4 py-2 bg-danger text-text rounded-lg hover:bg-ink-depth transition disabled:opacity-50 font-medium border border-danger"
               >
                 {deleting ? 'Deleting...' : 'Delete Everything'}
               </button>

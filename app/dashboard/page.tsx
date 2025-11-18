@@ -54,22 +54,22 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
+      <header className="bg-background-elevated border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div>
-              <h1 className="text-xl font-bold text-white">
+              <h1 className="text-xl font-bold text-text-header">
                 🔒 Secure Platform
               </h1>
-              <p className="text-sm text-gray-400">Welcome, {user?.username}</p>
+              <p className="text-sm text-text-muted">Welcome, {user?.username}</p>
             </div>
             <div className="flex items-center gap-4">
               <EmergencyDelete />
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition"
+                className="px-4 py-2 text-sm font-medium text-text-muted hover:text-text transition"
               >
                 Logout
               </button>
@@ -79,7 +79,7 @@ export default function Dashboard() {
       </header>
 
       {/* Navigation Tabs */}
-      <div className="bg-gray-800 border-b border-gray-700">
+      <div className="bg-background-elevated border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-8">
             {['calendar', 'posts', 'create', 'platforms'].map((tab) => (
@@ -88,8 +88,8 @@ export default function Dashboard() {
                 onClick={() => setActiveTab(tab)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm capitalize transition ${
                   activeTab === tab
-                    ? 'border-purple-500 text-purple-400'
-                    : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+                    ? 'border-primary text-text'
+                    : 'border-transparent text-text-muted hover:text-text hover:border-border'
                 }`}
               >
                 {tab}
@@ -108,9 +108,9 @@ export default function Dashboard() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 border-t border-gray-700 mt-auto">
+      <footer className="bg-background-elevated border-t border-border mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <p className="text-center text-sm text-gray-400">
+          <p className="text-center text-sm text-text-muted">
             All data is encrypted • Metadata automatically removed • No tracking
           </p>
         </div>
